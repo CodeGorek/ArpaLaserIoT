@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícono: marco de arpa con 4 haces láser -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FF0E1116"
+        android:pathData="M54,0a54,54 0,1 1,0 108a54,54 0,1 1,0 -108z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFEDEFF3"
+        android:strokeWidth="5"
+        android:pathData="M28,82 L28,26 L80,26 L80,82 Z" />
+    <path
+        android:strokeColor="#FFFF3B3B"
+        android:strokeWidth="4"
+        android:pathData="M40,30 L40,78 M50,30 L50,78 M60,30 L60,78 M70,30 L70,78" />
+    <path
+        android:fillColor="#FF39FF88"
+        android:pathData="M50,50a4,4 0,1 1,0 8a4,4 0,1 1,0 -8z" />
+</vector>

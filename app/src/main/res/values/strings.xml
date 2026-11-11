@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arpa Láser IoT</string>
+
+    <string name="control_intro">Conecta tu arpa y prepara cada cuerda para tocar.</string>
+    <string name="control_sound_section">SONIDO Y ESCALAS</string>
+    <string name="control_notes_section">CONFIGURACIÓN DE CUERDAS</string>
+    <string name="control_tools_section">HERRAMIENTAS</string>
+    <string name="control_live_section">EN VIVO</string>
+    <string name="sim_intro">Convierte este dispositivo en un arpa de seis cuerdas.</string>
+    <string name="sim_play_section">TOCA LAS CUERDAS</string>
+    <string name="sim_log_section">ACTIVIDAD</string>
+    <string name="history_intro">Revisa la actividad y las notas registradas.</string>
+    <string name="history_section">EVENTOS RECIENTES</string>
+    <string name="register_intro">Crea un acceso para usar y monitorear el arpa.</string>
+    <string name="register_section">DATOS DE LA CUENTA</string>
+    <string name="home_open">Abrir</string>
+
+    <!-- Login / registro -->
+    <string name="login_eyebrow">MÚSICA · LUZ · CONEXIÓN</string>
+    <string name="login_title">Tu música comienza aquí.</string>
+    <string name="login_form_title">Bienvenido de nuevo</string>
+    <string name="login_form_desc">Ingresa a tu espacio de control.</string>
+    <string name="login_subtitle">Control y monitoreo inalámbrico (6 cuerdas)</string>
+    <string name="first_run_hint">Primera ejecución: no hay usuarios registrados. Cree la cuenta de administrador para comenzar.</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="create_admin">Crear cuenta administrador</string>
+    <string name="security_footer">Tus credenciales están protegidas</string>
+    <string name="session_expired">Su sesión expiró por inactividad. Ingrese nuevamente.</string>
+    <string name="required">Campo obligatorio</string>
+    <string name="invalid_credentials">Usuario o contraseña incorrectos. Intentos restantes: %1$d</string>
+    <string name="account_locked">Cuenta bloqueada temporalmente por seguridad. Intente en %1$d s.</string>
+    <string name="not_authorized">No tiene permisos para esta acción</string>
+    <string name="register_user">Registrar usuario</string>
+    <string name="role_admin_fixed">Rol: Administrador (primera cuenta)</string>
+    <string name="role">Rol del usuario</string>
+    <string name="register">Registrar</string>
+    <string name="password_policy">Usuario: 4–20 caracteres (letras, números, _ o .).\nContraseña: mínimo 8 caracteres con mayúscula, minúscula y número.</string>
+    <string name="invalid_username">Usuario inválido (4–20 caracteres: letras, números, _ o .)</string>
+    <string name="password_mismatch">Las contraseñas no coinciden</string>
+    <string name="username_taken">El usuario ya existe</string>
+    <string name="user_created">Usuario %1$s creado correctamente</string>
+
+    <string name="home_eyebrow">ARPA LÁSER · IOT</string>
+    <string name="home_sections">EXPLORAR</string>
+
+    <!-- Menú principal -->
+    <string name="welcome">Hola, %1$s</string>
+    <string name="role_label">Rol: %1$s</string>
+    <string name="stats_summary">%1$d notas registradas</string>
+    <string name="menu_control">Controlar arpa</string>
+    <string name="control_desc">Conectar por Bluetooth, asignar las 6 notas, elegir efecto de sonido y monitorear</string>
+    <string name="monitor_desc">Conectar por Bluetooth y monitorear las 6 cuerdas en tiempo real (solo lectura)</string>
+    <string name="menu_simulator">Modo simulador de arpa</string>
+    <string name="simulator_desc">Toca las seis cuerdas desde este teléfono</string>
+    <string name="menu_history">Historial de datos</string>
+    <string name="history_desc">Consulta notas, comandos y eventos de seguridad</string>
+    <string name="users_desc">Crear cuentas de Músico u Observador (solo administrador)</string>
+    <string name="logout">Cerrar sesión</string>
+
+    <!-- Control -->
+    <string name="bt_required">Se requiere Bluetooth activado</string>
+    <string name="bt_not_supported">Este equipo no soporta Bluetooth</string>
+    <string name="permission_denied">Permiso Bluetooth denegado. Actívelo en Ajustes &gt; Apps.</string>
+    <string name="no_paired_title">Sin dispositivos vinculados</string>
+    <string name="no_paired_msg">Vincule primero el HC-05 del arpa (PIN configurado) o el teléfono simulador desde los ajustes de Bluetooth.</string>
+    <string name="open_settings">Abrir ajustes</string>
+    <string name="choose_device">Seleccione el arpa</string>
+    <string name="device_key_title">Clave del arpa</string>
+    <string name="device_key_hint">6–24 caracteres</string>
+    <string name="device_key_msg">Clave compartida con el dispositivo. Se guarda cifrada en el teléfono.</string>
+    <string name="invalid_device_key">Clave inválida: 6–24 caracteres (letras, números, - o _)</string>
+    <string name="device_key_rejected">El arpa rechazó la clave</string>
+    <string name="connect">Conectar</string>
+    <string name="disconnect">Desconectar</string>
+    <string name="pair">Vincular</string>
+    <string name="connect_first">Conéctese y autentique el arpa primero</string>
+    <string name="status_disconnected">● Desconectado</string>
+    <string name="status_connecting">● Conectando a %1$s…</string>
+    <string name="status_listening">● Esperando conexión…</string>
+    <string name="status_authenticating">● Conectado · autenticando…</string>
+    <string name="status_authenticated">● Conectado y autenticado: %1$s</string>
+    <string name="status_no_response">● Sin respuesta del arpa</string>
+    <string name="latency">Latencia: %1$d ms</string>
+    <string name="latency_none">Latencia: --</string>
+    <string name="invalid_frames">Tramas rechazadas: %1$d</string>
+    <string name="invalid_frames_zero">Tramas rechazadas: 0</string>
+    <string name="observer_notice">Rol Observador: solo puede monitorear. La configuración de notas y efectos está deshabilitada.</string>
+    <string name="effect_label">Efecto de sonido: %1$s</string>
+    <string name="preset_label">Escalas y conjuntos (6 cuerdas)</string>
+    <string name="preset_choose">Selecciona una escala o conjunto</string>
+    <string name="preset_add">+ Crear conjunto</string>
+    <string name="preset_edit">Editar</string>
+    <string name="preset_name">Nombre del conjunto</string>
+    <string name="preset_frequency">Cuerda %1$d · frecuencia en Hz</string>
+    <string name="preset_hint">Asigna una frecuencia a cada cuerda. Rango permitido: 65–2000 Hz.</string>
+    <string name="preset_invalid_name">Escribe un nombre de hasta 40 caracteres.</string>
+    <string name="preset_duplicate">Ya existe un conjunto con ese nombre.</string>
+    <string name="preset_invalid_frequency">Ingresa una frecuencia entre 65 y 2000 Hz.</string>
+    <string name="preset_save">Guardar y aplicar</string>
+    <string name="preset_delete_confirm">¿Eliminar el conjunto «%1$s»?</string>
+    <string name="preset_custom">%1$s · personalizado</string>
+    <string name="assign_notes_title">Asignar notas a botones (Cuerda 1–6):</string>
+    <string name="pick_note_title">Asignar nota a Cuerda %1$d</string>
+    <string name="note_button_text">C%1$d: %2$s\n%3$d Hz</string>
+    <string name="btn_test_tone">Tono prueba</string>
+    <string name="btn_calibrate">Calibrar LDR</string>
+    <string name="btn_sync">Sincronizar</string>
+    <string name="local_audio">Sonido en este celular</string>
+    <string name="local_audio_desc">Reproduce aquí las notas cuando se activan los láseres del arpa conectada.</string>
+    <string name="strings_title">Cuerdas láser en vivo (6 sensores)</string>
+    <string name="last_note">Última: cuerda %1$d (%2$s) a las %3$s</string>
+    <string name="last_note_none">Última: --</string>
+    <string name="reset_counters">Reiniciar</string>
+    <string name="comm_log">Bitácora de comunicación</string>
+
+    <!-- Simulador -->
+    <string name="start_server">Iniciar arpa</string>
+    <string name="stop_server">Detener</string>
+    <string name="make_visible">Hacer visible</string>
+    <string name="sim_stopped">● Simulador detenido</string>
+    <string name="sim_authenticated">● Controlado por la app (autenticado)</string>
+    <string name="sim_hint">Las 6 cuerdas suenan con el efecto elegido; la telemetría solo se envía al cliente autenticado.</string>
+    <string name="sim_string_label">C%1$d\n\n%2$s\n%3$d Hz</string>
+
+    <!-- Historial -->
+    <string name="filter_all">Todos los eventos</string>
+    <string name="note_stats">Activaciones por cuerda\nC1: %1$d  C2: %2$d  C3: %3$d  C4: %4$d  C5: %5$d  C6: %6$d\nTotal: %7$d</string>
+    <string name="clear_history">Borrar</string>
+    <string name="clear_history_confirm">¿Eliminar todo el historial? La acción quedará registrada en la bitácora.</string>
+    <string name="delete">Eliminar</string>
+    <string name="history_empty">No hay eventos registrados</string>
+</resources>

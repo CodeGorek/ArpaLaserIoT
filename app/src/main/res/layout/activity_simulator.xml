@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView style="@style/ScreenIntro" android:text="@string/sim_intro" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView
+                android:id="@+id/tvSimStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilKey"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/device_key_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:maxLength="24" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/start_server" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVisible"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/make_visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSimEffect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_primary" />
+
+        <Spinner
+            android:id="@+id/spSimEffect"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_card"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
+
+        <TextView
+            android:id="@+id/tvSimHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sim_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <TextView style="@style/SectionLabel" android:text="@string/sim_play_section" />
+
+        <!-- 6 cuerdas táctiles con altura mínima garantizada para pantallas horizontales/WSA -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:minHeight="220dp"
+            android:orientation="horizontal">
+
+            <TextView android:id="@+id/sim1" style="@style/SimString" />
+            <TextView android:id="@+id/sim2" style="@style/SimString" />
+            <TextView android:id="@+id/sim3" style="@style/SimString" />
+            <TextView android:id="@+id/sim4" style="@style/SimString" />
+            <TextView android:id="@+id/sim5" style="@style/SimString" />
+            <TextView android:id="@+id/sim6" style="@style/SimString" />
+        </LinearLayout>
+
+        <TextView style="@style/SectionLabel" android:text="@string/sim_log_section" />
+
+        <TextView
+            android:id="@+id/tvSimLog"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_card"
+            android:fontFamily="monospace"
+            android:padding="16dp"
+            android:textColor="@color/laser_green"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

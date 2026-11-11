@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#FF0B1019</color>
+    <color name="card">#FF172231</color>
+    <color name="card_border">#FF2A3A4C</color>
+    <color name="laser_red">#FFFF6B6B</color>
+    <color name="laser_green">#FF69E8CF</color>
+    <color name="warning">#FFFFC76B</color>
+    <color name="string_idle">#FF624152</color>
+    <color name="text_primary">#FFF1F5F9</color>
+    <color name="text_secondary">#FFB0BFCE</color>
+</resources>
