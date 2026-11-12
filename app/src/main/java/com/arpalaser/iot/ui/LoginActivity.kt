@@ -43,18 +43,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLogin.setOnClickListener { attemptLogin() }
-        binding.btnCreateAdmin.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java).putExtra(RegisterActivity.EXTRA_BOOTSTRAP, true))
+        binding.btnCreateMusician.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Sin usuarios aún: se permite crear SOLO la primera cuenta (administrador).
-        // Las siguientes cuentas solo las crea un administrador desde el menú principal.
-        val noUsers = users.count() == 0
-        binding.btnCreateAdmin.visibility = if (noUsers) View.VISIBLE else View.GONE
-        binding.tvFirstRun.visibility = if (noUsers) View.VISIBLE else View.GONE
     }
 
     private fun attemptLogin() {
@@ -78,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
         setLoading(false)
         when (result) {
             is LoginResult.Success -> {
-                session.start(result.user.id, result.user.username, result.user.role)
+                session.start(result.user)
                 events.log(EventType.LOGIN_OK, "Rol ${result.user.role.name}", result.user.username)
                 binding.etPassword.text?.clear()
                 goToMain()
@@ -103,6 +94,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setLoading(loading: Boolean) {
         binding.progress.visibility = if (loading) View.VISIBLE else View.GONE
         binding.btnLogin.isEnabled = !loading
+        binding.btnCreateMusician.isEnabled = !loading
     }
 
     private fun goToMain() {

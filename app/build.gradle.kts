@@ -1,7 +1,21 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val ownerConfig = Properties().apply {
+    val file = rootProject.file("owner.properties")
+    if (file.isFile) file.inputStream().use { load(it) }
+}
+val ownerUsername = ownerConfig.getProperty("username", "")
+val ownerPasswordHash = ownerConfig.getProperty("passwordHash", "")
+require(
+    (ownerUsername.isEmpty() && ownerPasswordHash.isEmpty()) ||
+        (ownerUsername.matches(Regex("[A-Za-z0-9_.]{4,20}")) &&
+            ownerPasswordHash.matches(Regex("600000:[a-f0-9]{32}:[a-f0-9]{64}")))
+) { "Configuración de administrador inválida. Ejecuta tools/Configure-Owner.ps1." }
 
 android {
     namespace = "com.arpalaser.iot"
@@ -12,8 +26,10 @@ android {
         // API 26 (Android 8.0): mínimo que garantiza PBKDF2WithHmacSHA256 y Android Keystore AES-GCM.
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = 3
+        versionName = "2.1"
+        buildConfigField("String", "OWNER_USERNAME", "\"$ownerUsername\"")
+        buildConfigField("String", "OWNER_PASSWORD_HASH", "\"$ownerPasswordHash\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,6 +52,7 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 }

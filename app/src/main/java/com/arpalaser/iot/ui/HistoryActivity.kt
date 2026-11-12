@@ -68,6 +68,7 @@ class HistoryActivity : SecureActivity() {
             .setTitle(R.string.clear_history)
             .setMessage(R.string.clear_history_confirm)
             .setPositiveButton(R.string.delete) { _, _ ->
+                if (!session.role.canDeleteHistory) return@setPositiveButton
                 events.clearAll()
                 // El propio borrado queda auditado (trazabilidad).
                 events.log(EventType.HISTORIAL_BORRADO, null, session.username)

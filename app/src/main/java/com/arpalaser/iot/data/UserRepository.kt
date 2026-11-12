@@ -3,6 +3,7 @@ package com.arpalaser.iot.data
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
+import android.database.sqlite.SQLiteDatabase
 import com.arpalaser.iot.data.DatabaseHelper.Companion.T_USERS
 import com.arpalaser.iot.data.DatabaseHelper.Companion.U_CREATED
 import com.arpalaser.iot.data.DatabaseHelper.Companion.U_FAILED
@@ -11,6 +12,8 @@ import com.arpalaser.iot.data.DatabaseHelper.Companion.U_LOCKED_UNTIL
 import com.arpalaser.iot.data.DatabaseHelper.Companion.U_PASSWORD
 import com.arpalaser.iot.data.DatabaseHelper.Companion.U_ROLE
 import com.arpalaser.iot.data.DatabaseHelper.Companion.U_USERNAME
+import com.arpalaser.iot.security.InputValidator
+import com.arpalaser.iot.security.OwnerAccount
 import com.arpalaser.iot.security.PasswordHasher
 import com.arpalaser.iot.security.Role
 
@@ -35,16 +38,15 @@ class UserRepository(context: Context) {
 
     private val db = DatabaseHelper.get(context)
 
-    fun count(): Int = db.readableDatabase.rawQuery("SELECT COUNT(*) FROM $T_USERS", null).use {
-        if (it.moveToFirst()) it.getInt(0) else 0
-    }
-
-    /** Retorna el id del usuario creado o -1 si el nombre ya existe. */
-    fun register(username: String, password: CharArray, role: Role): Long {
+    /** El autorregistro solo crea músicos. Retorna -1 si el nombre está ocupado o reservado. */
+    fun registerMusician(username: String, password: CharArray): Long {
+        val name = username.trim()
+        require(InputValidator.isValidUsername(name))
+        if (OwnerAccount.matches(name)) return -1L
         val values = ContentValues().apply {
-            put(U_USERNAME, username.trim())
+            put(U_USERNAME, name)
             put(U_PASSWORD, PasswordHasher.hash(password))
-            put(U_ROLE, role.name)
+            put(U_ROLE, Role.MUSICO.name)
             put(U_CREATED, System.currentTimeMillis())
         }
         return try {
@@ -55,11 +57,15 @@ class UserRepository(context: Context) {
     }
 
     fun login(username: String, password: CharArray): LoginResult {
+        val name = username.trim()
+        val isOwner = OwnerAccount.matches(name)
+        if (isOwner) ensureOwnerLoginRecord()
+
         val now = System.currentTimeMillis()
         val cursor = db.readableDatabase.query(
             T_USERS,
             arrayOf(U_ID, U_USERNAME, U_PASSWORD, U_ROLE, U_FAILED, U_LOCKED_UNTIL),
-            "$U_USERNAME = ?", arrayOf(username.trim()), null, null, null
+            "$U_USERNAME = ?", arrayOf(name), null, null, null
         )
         cursor.use { c ->
             if (!c.moveToFirst()) {
@@ -69,9 +75,14 @@ class UserRepository(context: Context) {
                 return LoginResult.InvalidCredentials(MAX_ATTEMPTS)
             }
             val id = c.getLong(0)
-            val name = c.getString(1)
-            val hash = c.getString(2)
-            val role = Role.fromName(c.getString(3))
+            val accountName = if (isOwner) OwnerAccount.username else c.getString(1)
+            val hash = if (isOwner) OwnerAccount.passwordHash else c.getString(2)
+            val storedRole = Role.fromName(c.getString(3))
+            val role = when {
+                isOwner -> Role.ADMIN
+                storedRole == Role.ADMIN -> Role.MUSICO
+                else -> storedRole
+            }
             val failed = c.getInt(4)
             val lockedUntil = c.getLong(5)
 
@@ -79,7 +90,7 @@ class UserRepository(context: Context) {
 
             return if (PasswordHasher.verify(password, hash)) {
                 updateAttempts(id, 0, 0)
-                LoginResult.Success(User(id, name, role))
+                LoginResult.Success(User(id, accountName, role))
             } else {
                 val newFailed = failed + 1
                 if (newFailed >= MAX_ATTEMPTS) {
@@ -93,11 +104,15 @@ class UserRepository(context: Context) {
         }
     }
 
-    fun listUsers(): List<User> {
-        val list = mutableListOf<User>()
-        db.readableDatabase.query(T_USERS, arrayOf(U_ID, U_USERNAME, U_ROLE), null, null, null, null, "$U_USERNAME ASC")
-            .use { c -> while (c.moveToNext()) list += User(c.getLong(0), c.getString(1), Role.fromName(c.getString(2))) }
-        return list
+    private fun ensureOwnerLoginRecord() {
+        // SQLite registra los intentos. La credencial del administrador se verifica con la del APK.
+        val values = ContentValues().apply {
+            put(U_USERNAME, OwnerAccount.username)
+            put(U_PASSWORD, "")
+            put(U_ROLE, Role.MUSICO.name)
+            put(U_CREATED, System.currentTimeMillis())
+        }
+        db.writableDatabase.insertWithOnConflict(T_USERS, null, values, SQLiteDatabase.CONFLICT_IGNORE)
     }
 
     private fun updateAttempts(id: Long, failed: Int, lockedUntil: Long) {

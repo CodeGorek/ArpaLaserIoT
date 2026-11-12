@@ -3,6 +3,7 @@ package com.arpalaser.iot.data
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.arpalaser.iot.security.Role
 
 /**
  * Base de datos local SQLite.
@@ -14,7 +15,7 @@ class DatabaseHelper private constructor(context: Context) :
 
     companion object {
         const val DB_NAME = "arpa_laser.db"
-        const val DB_VERSION = 1
+        const val DB_VERSION = 2
 
         const val T_USERS = "users"
         const val U_ID = "id"
@@ -71,8 +72,11 @@ class DatabaseHelper private constructor(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $T_EVENTS")
-        db.execSQL("DROP TABLE IF EXISTS $T_USERS")
-        onCreate(db)
+        if (oldVersion < 2) {
+            db.execSQL(
+                "UPDATE $T_USERS SET $U_ROLE = ? WHERE $U_ROLE = ?",
+                arrayOf(Role.MUSICO.name, Role.ADMIN.name)
+            )
+        }
     }
 }

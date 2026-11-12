@@ -29,10 +29,6 @@
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="5dp" android:text="@string/login_form_desc"
             android:textColor="@color/text_secondary" android:textSize="14sp" />
-        <TextView android:id="@+id/tvFirstRun" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_marginTop="16dp"
-            android:background="@drawable/bg_card" android:padding="16dp"
-            android:text="@string/first_run_hint" android:textColor="@color/laser_green" android:visibility="gone" />
         <com.google.android.material.textfield.TextInputLayout android:id="@+id/tilUsername"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -62,10 +58,9 @@
         <com.google.android.material.button.MaterialButton android:id="@+id/btnLogin"
             android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="20dp"
             android:text="@string/login" />
-        <com.google.android.material.button.MaterialButton android:id="@+id/btnCreateAdmin"
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnCreateMusician"
             style="@style/Widget.Material3.Button.OutlinedButton" android:layout_width="match_parent"
-            android:layout_height="56dp" android:layout_marginTop="8dp" android:text="@string/create_admin"
-            android:visibility="gone" />
+            android:layout_height="56dp" android:layout_marginTop="8dp" android:text="@string/create_musician" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="20dp" android:gravity="center" android:text="@string/security_footer"
             android:textColor="@color/text_secondary" android:textSize="12sp" />

@@ -41,8 +41,8 @@ class SecurityTest {
     }
 
     @Test fun roles_leastPrivilege() {
-        assertTrue(Role.ADMIN.canManageUsers)
-        assertFalse(Role.MUSICO.canManageUsers)
+        assertTrue(Role.ADMIN.canDeleteHistory)
+        assertFalse(Role.MUSICO.canDeleteHistory)
         assertFalse(Role.OBSERVADOR.canControl)
         assertFalse(Role.OBSERVADOR.canDeleteHistory)
     }

@@ -115,24 +115,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView android:id="@+id/cardUsers"
-            style="@style/HomeCard" app:cardBackgroundColor="@color/card">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp">
-                <ImageView android:layout_width="48dp" android:layout_height="48dp"
-                    android:background="@drawable/bg_icon_tile" android:padding="12dp"
-                    android:src="@drawable/ic_users" android:contentDescription="@null" />
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                    android:layout_weight="1" android:layout_marginStart="14dp" android:orientation="vertical">
-                    <TextView style="@style/HomeCardTitle" android:text="@string/register_user" />
-                    <TextView style="@style/HomeCardDesc" android:text="@string/users_desc" android:textSize="13sp" />
-                </LinearLayout>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" android:text="›" android:textSize="28sp"
-                    android:textColor="@color/text_secondary" android:importantForAccessibility="no" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             style="@style/Widget.Material3.Button.OutlinedButton"

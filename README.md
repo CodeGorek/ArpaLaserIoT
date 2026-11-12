@@ -50,8 +50,8 @@ ArpaLaserIoT/
 │   │   │   └── SessionManager.kt            # EncryptedSharedPreferences + Android Keystore + notas/efecto guardados
 │   │   ├── ui/
 │   │   │   ├── SecureActivity.kt            # Guardia base de sesión (timeout 10 min)
-│   │   │   ├── LoginActivity.kt             # Login y bootstrap de cuenta ADMIN inicial
-│   │   │   ├── RegisterActivity.kt          # Alta de usuarios (solo bootstrap o ADMIN)
+│   │   │   ├── LoginActivity.kt             # Inicio de sesión
+│   │   │   ├── RegisterActivity.kt          # Autorregistro con rol MUSICO
 │   │   │   ├── MainActivity.kt              # Panel principal filtrado por rol
 │   │   │   ├── ControlActivity.kt           # Cliente BT: botones C1–C6, selector efecto, calibración, 6 cuerdas en vivo
 │   │   │   ├── SimulatorActivity.kt         # Servidor BT: 2º teléfono simulando las 6 cuerdas + 7 efectos
@@ -124,6 +124,20 @@ AT+UART=9600,0,0
 - **Control de acceso y permisos**: RBAC (`ADMIN`, `MUSICO`, `OBSERVADOR`), expiración de sesión (10 min en app, 15 s en dispositivo), `BLUETOOTH_CONNECT`/`BLUETOOTH_ADVERTISE` sin ubicación GPS.
 - **Integridad de canal**: Sockets RFCOMM cifrados, checksum XOR `*CS`, lista blanca estricta (`AUTH`, `PING`, `N1-6`, `S`, `E1-5`, `CAL`, `TEST`), búfer acotado (`48` bytes).
 - **Pruebas unitarias**: `./gradlew testDebugUnitTest assembleDebug`. Hay 12 pruebas en `ProtocolTest`, `SecurityTest`, `CustomPresetTest` y `PluckedStringTest`. Estas pruebas no verifican por sí solas la conexión física ni la interfaz.
+
+### Cuenta de administrador
+
+En la pantalla de inicio, **Crear cuenta de músico** está disponible desde la primera instalación. Todas las cuentas creadas allí son de músico. Al actualizar desde una versión anterior, las cuentas de administrador locales pasan a músico y sus sesiones se cierran. Se conservan las cuentas y el historial.
+
+Para habilitar tu cuenta de administrador, abre PowerShell en la raíz del proyecto y ejecuta:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\Configure-Owner.ps1
+```
+
+Elige un nombre de usuario y usa una contraseña aleatoria de 24 a 64 caracteres generada por tu gestor de contraseñas. Escríbela en la consola cuando el script la pida. Luego compila una APK de lanzamiento firmada e inicia sesión con ese usuario y esa contraseña. Si ese nombre ya estaba registrado en el teléfono, queda reservado y, mientras esté configurado, solo acepta la contraseña de administrador. Solo el administrador puede borrar el historial.
+
+El archivo local `owner.properties` queda fuera de Git. La APK guarda un verificador PBKDF2, que puede extraerse de la APK, por lo que la contraseña debe ser larga y aleatoria. Sin configuración, la compilación solo permite el acceso de músico y de observadores ya existentes. Para cambiar la contraseña, ejecuta el script con `-Replace`, compila y distribuye la actualización. Cada instalación guarda sus propias cuentas e historial.
 
 ### Comprobación antes de la entrega
 

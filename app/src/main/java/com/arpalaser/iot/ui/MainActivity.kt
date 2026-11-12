@@ -23,7 +23,6 @@ class MainActivity : SecureActivity() {
         binding.cardControl.setOnClickListener { startActivity(Intent(this, ControlActivity::class.java)) }
         binding.cardSimulator.setOnClickListener { startActivity(Intent(this, SimulatorActivity::class.java)) }
         binding.cardHistory.setOnClickListener { startActivity(Intent(this, HistoryActivity::class.java)) }
-        binding.cardUsers.setOnClickListener { startActivity(Intent(this, RegisterActivity::class.java)) }
         binding.btnLogout.setOnClickListener { logout() }
     }
 
@@ -34,7 +33,6 @@ class MainActivity : SecureActivity() {
         binding.tvWelcome.text = getString(R.string.welcome, session.username)
         binding.tvRole.text = getString(R.string.role_label, role.displayName)
         binding.cardSimulator.visibility = if (role.canControl) View.VISIBLE else View.GONE
-        binding.cardUsers.visibility = if (role.canManageUsers) View.VISIBLE else View.GONE
         binding.tvControlDesc.text = getString(if (role.canControl) R.string.control_desc else R.string.monitor_desc)
 
         val counts = events.noteCounts()

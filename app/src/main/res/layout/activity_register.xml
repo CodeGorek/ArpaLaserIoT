@@ -74,21 +74,6 @@
                 android:maxLength="64" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tvRoleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/role"
-            android:textColor="@color/text_primary" />
-
-        <Spinner
-            android:id="@+id/spRole"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bg_card" android:paddingStart="12dp" android:paddingEnd="12dp" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
