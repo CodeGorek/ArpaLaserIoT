@@ -14,7 +14,7 @@ En su funcionamiento original, el arpa láser ejecutaba de forma rígida 4 frecu
 
 **Arpa Láser IoT v2.1** amplía y resuelve la problemática integrando:
 - **6 cuerdas láser configurables**: 6 sensores LDR (`A0–A5`) y 6 módulos láser (`D4–D9`), conservando la **calibración automática al inicio** (`umbralLuz[i] = luzPromedio * 0.7`) y añadiendo **recalibración remota (`CAL`)** desde la app.
-- **Asignación de notas por botones (`C1–C6`)**: desde la app móvil se puede tocar cualquiera de los 6 botones de cuerda para elegir entre **22 notas musicales predefinidas** (`Do3` 131 Hz a `Mi5` 659 Hz), o aplicar 4 escalas rápidas en un toque (*Escala Mayor*, *Pentatónica*, *Acorde Menor*, *Graves/Bajo*).
+- **Asignación de notas por botones (`C1–C6`)**: desde la app móvil se puede tocar cualquiera de los 6 botones de cuerda para elegir entre **22 notas musicales predefinidas** (`Do3` 131 Hz a `Mi5` 659 Hz), o aplicar 4 escalas rápidas en un toque (*Escala Mayor*, *Pentatónica*, *Acorde Menor*, *Graves/Bajo*). También se pueden crear, editar y eliminar conjuntos locales con nombre y seis frecuencias entre 65 y 2000 Hz.
 - **7 efectos de sonido**: el teléfono sintetiza sus timbres en PCM (`AudioTrack`). El Arduino usa `tone()` y solo genera aproximaciones de onda cuadrada en D11; no reproduce el mismo sonido que el teléfono:
   1. `E1` — **Arpa**
   2. `E2` — **Piano**
@@ -70,16 +70,16 @@ ArpaLaserIoT/
 
 ## 3. Diseño de Interfaz (Mockups) y Arquitectura Segura
 
-![Mockup Login, Menú y Conexión](docs/mockup_a.png)
-![Mockup Control 6 Cuerdas, Simulador e Historial](docs/mockup_b.png)
-![Mockup Registro y Mapa de Navegación](docs/mockup_c.png)
+![Mockup de acceso y menú principal](docs/mockup_actual_1.png)
+![Mockup de control y conjuntos personalizados](docs/mockup_actual_2.png)
+![Mockup de simulador e historial](docs/mockup_actual_3.png)
 ![Arquitectura de Comunicación Segura IoT](docs/diagrama_flujo_seguro.png)
 
 ---
 
-## 4. Protocolo Seguro App ⇄ Arpa (6 Cuerdas + Efectos)
+## 4. Protocolo App ⇄ Arpa (6 Cuerdas + Efectos)
 
-Tramas ASCII terminadas en `\n` con verificación XOR de 8 bits (límite máximo `48` bytes):
+Tramas ASCII terminadas en `\n` con verificación XOR de 8 bits (límite máximo `48` bytes). El XOR detecta algunos errores accidentales, pero no es una firma criptográfica ni impide modificaciones deliberadas. La clave se envía en la trama de autenticación; el emparejamiento Bluetooth protege el enlace de radio según los dispositivos, pero no constituye autenticación mutua a nivel de aplicación:
 
 ```text
 PAYLOAD*CS\n      (CS = XOR hexadecimal de 2 dígitos)
@@ -91,12 +91,14 @@ PAYLOAD*CS\n      (CS = XOR hexadecimal de 2 dígitos)
 | Arpa → App | `AUTH_OK*53` / `AUTH_FAIL` / `AUTH_LOCK` | Resultado de autenticación o bloqueo (30 s tras 3 fallos) |
 | App → Arpa | `N6:440*72` | Asigna frecuencia (`65..2000 Hz`) a una cuerda (`1..6`) |
 | App → Arpa | `S:262,294,330,349,392,440*4A` | Sincroniza las 6 notas de una vez (preset o al conectar) |
-| App → Arpa | `E3*76` | Cambia el efecto de sonido (`E1` Arpa .. `E5` Sintetizador) |
-| App → Arpa | `CAL*4E` / `TEST*16` | Recalibra los 6 sensores LDR / emite tono de prueba (440 Hz) |
+| App → Arpa | `E3*76` | Cambia el efecto de sonido (`E1` Arpa .. `E7` Flauta) |
+| App → Arpa | `CAL*4E` / `TEST*16` | Recalibra los 6 sensores LDR / emite una prueba de la primera nota con el efecto seleccionado |
 | Arpa → App | `NOTA_ACTIVADA:5*49` | Telemetría de cuerda activada (`1..6`), solo si está autenticado |
 | App ⇄ Arpa | `PING*10` / `PONG*16` | Keep-alive cada 5 s (sesión expira a los 15 s sin tramas) y RTT |
 
 ---
+
+Los mockups son ilustrativos. El conjunto llamado «Star Wars» usa valores de ejemplo y no es una transcripción ni reproduce una canción automáticamente.
 
 ## 5. Conexión Hardware Real (Arduino UNO + 6 Sensores + HC-05)
 
@@ -104,7 +106,7 @@ PAYLOAD*CS\n      (CS = XOR hexadecimal de 2 dígitos)
 |---|---|---|
 | **6 Fotoreceptores (LDR)** | `A0, A1, A2, A3, A4, A5` | Calibración automática individual al iniciar (`promedio * 0.7`) y remota vía comando `CAL`. |
 | **6 Diodos Láser** | `D4, D5, D6, D7, D8, D9` | Encendidos automáticamente en `setup()`. |
-| **Buzzer / Minibuffer** | `D11` | Reproduce tonos y los 5 efectos sin bloquear la lectura de sensores. |
+| **Buzzer / Minibuffer** | `D11` | Genera aproximaciones de los 7 efectos mediante tonos simples; no reproduce el audio PCM del teléfono. |
 | **Módulo Bluetooth HC-05** | `D2` (RX Arduino ← TX HC-05)<br>`D3` (TX Arduino → RX HC-05) | Usar divisor resistivo `1 kΩ + 2 kΩ` (5 V → 3.3 V) en el pin `RXD` del HC-05. |
 
 **Hardening del HC-05 (comandos AT antes de desplegar):**
@@ -121,4 +123,12 @@ AT+UART=9600,0,0
 - **Credenciales y secretos**: `PBKDF2WithHmacSHA256` (60.000 iter + sal 16B) y `EncryptedSharedPreferences` con llave maestra en **Android Keystore**.
 - **Control de acceso y permisos**: RBAC (`ADMIN`, `MUSICO`, `OBSERVADOR`), expiración de sesión (10 min en app, 15 s en dispositivo), `BLUETOOTH_CONNECT`/`BLUETOOTH_ADVERTISE` sin ubicación GPS.
 - **Integridad de canal**: Sockets RFCOMM cifrados, checksum XOR `*CS`, lista blanca estricta (`AUTH`, `PING`, `N1-6`, `S`, `E1-5`, `CAL`, `TEST`), búfer acotado (`48` bytes).
-- **Pruebas unitarias (`10/10` aprobadas)**: `./gradlew testDebugUnitTest assembleDebug` (`ProtocolTest` + `SecurityTest`).
+- **Pruebas unitarias**: `./gradlew testDebugUnitTest assembleDebug`. Hay 12 pruebas en `ProtocolTest`, `SecurityTest`, `CustomPresetTest` y `PluckedStringTest`. Estas pruebas no verifican por sí solas la conexión física ni la interfaz.
+
+### Comprobación antes de la entrega
+
+- Probar la APK actual en un teléfono Android y, si corresponde, en BlueStacks. Registrar qué pruebas se realizaron realmente.
+- Probar la conexión autenticada con el HC-05 o entre dos teléfonos; comprobar las seis cuerdas, efectos, conjunto personalizado, historial y audio local. El emulador no sustituye estas pruebas físicas.
+- Cargar el firmware actualizado en el Arduino y cambiar la clave de ejemplo `DEVICE_KEY` por una propia antes de usarlo. No publicar claves reales.
+- Registrar la latencia observada en el equipo real; no se garantiza un tiempo máximo. Confirmar el diseño y recoger retroalimentación del docente.
+- Los archivos APK están excluidos por `.gitignore`. Para entregarlos por GitHub, adjuntar la APK a una Release o usar el canal indicado por el docente.

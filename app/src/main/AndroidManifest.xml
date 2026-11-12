@@ -10,10 +10,11 @@
         android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
 
-    <!-- Bluetooth en Android 12+ (permisos en tiempo de ejecución).
-         No se solicita BLUETOOTH_SCAN ni ubicación: la app solo usa dispositivos ya vinculados
-         (principio de mínimo privilegio - ISO 27400). -->
+    <!-- Android 12+: SCAN permite cancelar búsquedas Bluetooth antes de conectar;
+         no se utiliza para obtener ubicación. -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" tools:targetApi="s" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
     <uses-feature

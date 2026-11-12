@@ -64,7 +64,7 @@
     <!-- Control -->
     <string name="bt_required">Se requiere Bluetooth activado</string>
     <string name="bt_not_supported">Este equipo no soporta Bluetooth</string>
-    <string name="permission_denied">Permiso Bluetooth denegado. Actívelo en Ajustes &gt; Apps.</string>
+    <string name="permission_denied">Permisos de dispositivos cercanos denegados. Actívalos en Ajustes &gt; Aplicaciones.</string>
     <string name="no_paired_title">Sin dispositivos vinculados</string>
     <string name="no_paired_msg">Vincule primero el HC-05 del arpa (PIN configurado) o el teléfono simulador desde los ajustes de Bluetooth.</string>
     <string name="open_settings">Abrir ajustes</string>

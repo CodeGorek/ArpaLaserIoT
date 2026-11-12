@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 
 /**
  * Gestión centralizada de permisos Bluetooth según la versión de Android.
- *  - Android 12+ (API 31): BLUETOOTH_CONNECT (y BLUETOOTH_ADVERTISE para hacerse visible) en tiempo de ejecución.
+ *  - Android 12+ (API 31): BLUETOOTH_CONNECT y BLUETOOTH_SCAN para conectar; BLUETOOTH_ADVERTISE para hacerse visible en tiempo de ejecución.
  *  - Android 8–11: BLUETOOTH / BLUETOOTH_ADMIN se otorgan al instalar.
  */
 object BtPermissions {
@@ -20,7 +20,7 @@ object BtPermissions {
     fun required(asServer: Boolean): Array<String> =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (asServer) arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_ADVERTISE)
-            else arrayOf(Manifest.permission.BLUETOOTH_CONNECT)
+            else arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
         } else emptyArray()
 
     fun hasAll(context: Context, asServer: Boolean): Boolean =
